@@ -1,16 +1,28 @@
 <template>
-  <Header />
+ <Modal></Modal>
+ <div class="container">
+<Header></Header>
+  <Buttons></Buttons>
+  <Table></Table>
+ </div>
+  
+
 </template>
 
 <script>
-import Header from './components/Header.vue'
-
+import Header from "./components/Header.vue";
+import Buttons from "./components/Buttons.vue";
+import Modal from "./components/Modal.vue";
+import Table from "./components/Table.vue";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    Header
-  }
-}
+    Header,
+    Buttons,
+    Modal,
+    Table,
+  },
+};
 </script>
 
 <style>
@@ -21,5 +33,11 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  padding: 2rem;
 }
+.container{
+  display: flex;
+  flex-direction: column;
+}
+
 </style>
