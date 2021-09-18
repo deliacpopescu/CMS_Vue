@@ -1,5 +1,5 @@
 <template>
-  <button class="add-btn" v-on:click="showModal()">{{ title }}</button>
+  <button class="add-btn" v-on:click="showAddModal()">{{ title }}</button>
 </template>
 
 <script>
@@ -10,7 +10,7 @@ export default {
     };
   },
   methods:{
-      showModal(){
+      showAddModal(){
             document.getElementById('modal').style.display="block";
         },
        

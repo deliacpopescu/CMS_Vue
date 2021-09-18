@@ -4,7 +4,7 @@
       <span class="close" v-on:click="closeModal()">&times;</span>
       <h3>{{ title }}</h3>
       <div class="align-items-center">
-        <form id="form">
+        <form id="form" >
           <!-- <div class="picture"> -->
           <!-- <div class="pic-upload"> -->
           <img id="imagePlaceholder" v-bind:src="imgURL" />
@@ -23,6 +23,7 @@
           <div class="form-example">
             <label for="lastName">Nume</label>
             <input
+              v-model="lastname"
               class="mt-3 input-modal"
               type="text"
               name="lastName"
@@ -36,6 +37,7 @@
           <div class="form-example">
             <label for="name">Prenume</label>
             <input
+            v-model="name"
               class="mt-3 input-modal"
               type="text"
               name="name"
@@ -49,6 +51,7 @@
           <div class="form-example">
             <label for="email">Email</label>
             <input
+            v-model="email"
               class="mt-3 input-modal"
               type="text"
               name="email"
@@ -62,7 +65,7 @@
           </div>
           <div class="form-example">
             <label for="gender">Gen</label>
-            <select class="mt-3" id="gender" name="gender" required>
+            <select class="mt-3" id="gender" name="gender" v-model="gender" required>
               <option value="" selected hidden>Selectati</option>
               <option value="M">M</option>
               <option value="F">F</option>
@@ -71,6 +74,7 @@
           <div class="form-example">
             <label for="birthDate">Data nasterii</label>
             <input
+            v-model="birthDate"
               type="date"
               class="form-control mt-3"
               id="birthDate"
@@ -101,47 +105,30 @@ import newUser from "./../assets/newUser.png";
 export default {
   data() {
     return {
-      title: "Adaugati un nou angajat",
-      imgURL: newUser,
-       //rowData : {
-      //  // id: id,
-      //   img: modal.querySelector("#imagePlaceholder").src,
-        //  lastName: document.querySelector("#lastName") as HTMLInputElement,
-        //  name: document.querySelector("#name") as HTMLInputElement,
-        //  email: document.querySelector("#email") as HTMLInputElement,
-        //  gender: document.querySelector("#gender") as HTMLInputElement,
-        //  birthDate: document.querySelector("#birthDate") as HTMLInputElement
-   // }
+
+      title: "Editati datele angajatului",
+      employee: {
+        imgURL: newUser,
+        id: "",
+        lastName: "",
+        name: "",
+        email: "",
+        gender: "",
+        birtDate: "",
+      },
     };
   },
   methods: {
+    showModal() {
+      document.getElementById("modal").style.display = "block";
+    },
     closeModal() {
       document.getElementById("modal").style.display = "none";
-    },
-    addItem() {
-      <tr>
-        <td>
-          // <img src="${rowData.img}" />
-        </td>
-        <td>{this.lastname}</td>
-        <td>{this.name}</td>
-        <td>{this.email}</td>
-        <td>{this.gender}</td>
-        <td>{this.birthDate}</td>
-        <td>
-          <font-awesome-icon class="edit-btn" icon="edit"></font-awesome-icon>
-          <button>
-            <font-awesome-icon
-              class="delete-btn"
-              icon="times"
-            ></font-awesome-icon>
-          </button>
-        </td>
-      </tr>;
     },
   },
 };
 </script>
+
 <style scoped>
 #modal {
   left: 0;

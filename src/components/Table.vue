@@ -1,4 +1,14 @@
 <template>
+  <AddModal
+    v-for="row in rows"
+    :key="row.id"
+    :lastname="row.lastname"
+    :name="row.name"
+    :email="row.email"
+    :gender="row.gender"
+    :birthDate="row.birthDate"
+    @add-new-row="addNewItem"
+  ></AddModal>
   <table id="firstTable">
     <thead>
       <tr>
@@ -12,28 +22,25 @@
       </tr>
     </thead>
     <tbody>
-      <!-- <tr v-for="row in rows" v-bind:key="row">
-        <td v-for="id in row.id" v-bind:key="id">{{ id }}</td>
-        <td v-for="name in row.name" v-bind:key="name">{{ name }}</td>
-        <td v-for="phone in row.phone" v-bind:key="phone">{{ phone }}</td>
-        <td v-for="profession in row.profession" v-bind:key="profession">{{ profession }}</td>
-      </tr> -->
-      <tr>
-        <td>Poza</td>
-        <td>Chandler</td>
-        <td>Bing</td>
-        <td>bing@fmm.com</td>
-        <td>M</td>
-        <td>1990-02-03</td>
+      <tr v-for="row in rows" v-bind:key="row" v-bind:row="row">
+        <td>{{ row.id }}</td>
+        <td>{{ row.lastname }}</td>
+        <td>{{ row.name }}</td>
+        <td>{{ row.email }}</td>
+        <td>{{ row.gender }}</td>
+        <td>{{ row.birthDate }}</td>
         <td>
-          <font-awesome-icon class="edit-btn" icon="edit"></font-awesome-icon>
-          <button @click="deleteRow()">
-            <font-awesome-icon
-            
-              class="delete-btn"
-              icon="times"
-            ></font-awesome-icon>
-          </button>
+          <font-awesome-icon
+            class="edit-btn"
+            icon="edit"
+            @click="showEditModal"
+          ></font-awesome-icon>
+
+          <font-awesome-icon
+            v-on:click="deleteRow()"
+            class="delete-btn"
+            icon="times"
+          ></font-awesome-icon>
         </td>
       </tr>
     </tbody>
@@ -41,30 +48,38 @@
 </template>
 
 <script>
+// import AddModal from "./AddModal.vue";
+
 export default {
   name: "table-template",
+  // components:{
+  //   "add-modal": AddModal
+  // },
   data() {
     return {
       rows: [
         {
+          id: 0,
+          lastname: "Bing",
           name: "Chandler",
-          lastName: "Bing",
           email: "bing@fmm.com",
           gender: "M",
           birthDate: "1990-02-03",
           options: "IT Manager",
         },
         {
+          id: 1,
+          lastname: "Geller",
           name: "Ross",
-          lastName: "Geller",
           email: "geller@fmm.com",
           gender: "M",
           birthDate: "1982-05-07",
           options: "Paleontologist",
         },
         {
+          id: 2,
+          lastname: "Green",
           name: "Rachel",
-          lastName: "Green",
           email: "raceal@fmm.com",
           gender: "F",
           birthDate: "1999-05-04",
@@ -74,40 +89,19 @@ export default {
     };
   },
   methods: {
-    addItem() {
-      // let my_results = {
-      //   name: this.name,
-      //   lastNmae: this.lastName,
-      //   email: this.email,
-      //   gender: this.gender,
-      //   birthDate: this.birthDate,
-      //   options: this.options,
-      // };
-      // this.rows.push(my_results);
-
-      <tr>
-        <td>
-          // <img src="${rowData.img}" />
-        </td>
-        <td>{this.name}</td>
-        <td>{this.lastname}</td>
-        <td>{this.email}</td>
-        <td>{this.gender}</td>
-        <td>{this.birthDate}</td>
-        <td>
-          <font-awesome-icon class="edit-btn" icon="edit"></font-awesome-icon>
-          <button>
-            <font-awesome-icon
-              class="delete-btn"
-              icon="times"
-            ></font-awesome-icon>
-          </button>
-        </td>
-      </tr>;
+     addNewItem() {
+       console.log("this.rows=" + this.rows);
+       console.log("se apeleaza add item");
+        // this.rows.push(row.id);
     },
 
     deleteRow() {
-      console.log("click")
+       if (!confirm("Are you sure?")) {
+        return;
+      }
+        alert("click");
+
+
       //alert(event.target.tagName);
       //this.rows.splice(index, 1);
     },
