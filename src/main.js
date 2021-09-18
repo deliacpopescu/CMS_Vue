@@ -1,10 +1,21 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import {faEdit} from '@fortawesome/free-solid-svg-icons'
-import {faTimes } from '@fortawesome/free-solid-svg-icons'
+import { createApp } from 'vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faEdit, faTimes)
+import App from './App.vue';
+import Header from './components/Header.vue';
+import Buttons from './components/Buttons.vue';
+import EmpoyeeTable from './components/Table.vue';
 
-createApp(App).component('font-awesome-icon',FontAwesomeIcon).mount('#app')
+library.add(faEdit, faTimes);
+
+const app = createApp(App);
+
+app.component('font-awesome-icon',FontAwesomeIcon);
+app.component('cms-header', Header);
+app.component('cms-buttons', Buttons);
+app.component('cms-table', EmpoyeeTable);
+
+app.mount('#app');
