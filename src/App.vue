@@ -1,27 +1,16 @@
 <template>
- <Modal></Modal>
  <div class="container">
-<Header></Header>
-  <Buttons></Buttons>
-  <Table></Table>
+  <cms-header/>
+  <cms-buttons/>
+  <cms-table/>
  </div>
-  
-
 </template>
 
 <script>
-import Header from "./components/Header.vue";
-import Buttons from "./components/Buttons.vue";
-import Modal from "./components/Modal.vue";
-import Table from "./components/Table.vue";
+
 export default {
   name: "App",
-  components: {
-    Header,
-    Buttons,
-    Modal,
-    Table,
-  },
+  components: {},
 };
 </script>
 
@@ -39,5 +28,4 @@ export default {
   display: flex;
   flex-direction: column;
 }
-
 </style>
