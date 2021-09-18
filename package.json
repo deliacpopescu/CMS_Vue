@@ -13,8 +13,8 @@
       "sourceMapPathOverrides": {
         "webpack:///src/*": "${webRoot}/*"
       }
-    }],
-
+    }
+  ],
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -24,10 +24,12 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/vue-fontawesome": "^3.0.0-4",
+    "axios": "^0.21.4",
     "bootstrap": "^5.1.1",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
-    "vue": "^3.2.11"
+    "vue": "^3.2.11",
+    "vue-axios": "^3.3.7"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
