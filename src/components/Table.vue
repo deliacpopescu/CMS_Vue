@@ -1,14 +1,5 @@
 <template>
-  <AddModal
-    v-for="row in rows"
-    :key="row.id"
-    :lastname="row.lastname"
-    :name="row.name"
-    :email="row.email"
-    :gender="row.gender"
-    :birthDate="row.birthDate"
-    @add-new-row="addNewItem"
-  ></AddModal>
+  <add-modal @new-employee-added="reloadData"/>
   <table id="firstTable">
     <thead>
       <tr>
@@ -22,10 +13,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="row in rows" v-bind:key="row" v-bind:row="row">
-        <td>{{ row.id }}</td>
-        <td>{{ row.lastname }}</td>
-        <td>{{ row.name }}</td>
+      <tr v-for="row in rows" :key="row.id" :row="row" >
+        <td>{{ row.imgSrc }}</td>
+        <td>{{ row.lastName }}</td>
+        <td>{{ row.firstName }}</td>
         <td>{{ row.email }}</td>
         <td>{{ row.gender }}</td>
         <td>{{ row.birthDate }}</td>
@@ -33,11 +24,11 @@
           <font-awesome-icon
             class="edit-btn"
             icon="edit"
-            @click="showEditModal"
+            @click="showEditModal(row)"
           ></font-awesome-icon>
 
           <font-awesome-icon
-            v-on:click="deleteRow()"
+            v-on:click="deleteRow(row)"
             class="delete-btn"
             icon="times"
           ></font-awesome-icon>
@@ -45,65 +36,81 @@
       </tr>
     </tbody>
   </table>
+  <edit-modal
+    v-for="row in rows"
+    :key="row.id"
+    :last-name="row.lastName"
+    :first-name="row.firstName"
+    :email="row.email"
+    :gender="row.gender"
+    :birth-date="row.birthDate"
+    @add-new-row="addNewItem"
+  ></edit-modal>
 </template>
 
 <script>
-// import AddModal from "./AddModal.vue";
+import AddModal from "./AddModal.vue";
+import EditModal from "./EditModal.vue";
+import axios from "axios";
+import variables from "./../variables";
 
 export default {
   name: "table-template",
-  // components:{
-  //   "add-modal": AddModal
-  // },
+  components: {
+    AddModal,
+    EditModal
+  },
   data() {
     return {
-      rows: [
-        {
-          id: 0,
-          lastname: "Bing",
-          name: "Chandler",
-          email: "bing@fmm.com",
-          gender: "M",
-          birthDate: "1990-02-03",
-          options: "IT Manager",
-        },
-        {
-          id: 1,
-          lastname: "Geller",
-          name: "Ross",
-          email: "geller@fmm.com",
-          gender: "M",
-          birthDate: "1982-05-07",
-          options: "Paleontologist",
-        },
-        {
-          id: 2,
-          lastname: "Green",
-          name: "Rachel",
-          email: "raceal@fmm.com",
-          gender: "F",
-          birthDate: "1999-05-04",
-          options: "Waitress",
-        },
-      ],
+      loading: true,
+      rows: [], 
     };
   },
+  mounted() {
+    axios.get(`${variables.API_URL}/Employee`)
+      .then(response => {
+        this.rows = response.data;
+      })
+      .catch(error => {
+        this.errorMessage = error.message;
+        console.error("There was an error!", error);
+      })
+      .finally(() => this.loading = false);
+  },
   methods: {
-     addNewItem() {
-       console.log("this.rows=" + this.rows);
-       console.log("se apeleaza add item");
-        // this.rows.push(row.id);
+    reloadData () {
+      axios.get(`${variables.API_URL}/Employee`)
+        .then(response => {
+          this.rows = response.data;
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        })
+        .finally(() => this.loading = false);
+      },
+
+    addNewItem () {
+      console.log("this.rows=" + this.rows);
+      console.log("se apeleaza add item");
+      // this.rows.push(row.id);
     },
 
-    deleteRow() {
-       if (!confirm("Are you sure?")) {
-        return;
-      }
-        alert("click");
-
-
-      //alert(event.target.tagName);
-      //this.rows.splice(index, 1);
+    showEditModal(row) {
+      document.getElementById("modal").style.display = "block";
+      this.id=row.id;
+         //mai trebe poza
+    },
+    deleteRow(row) {
+      axios.delete(`${variables.API_URL}/Employee/${row.id}`)
+        .then(() => {
+          this.rows = this.rows.filter((e) => { return e.id !== row.id }) ;
+        })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        })
+        .finally(() => this.loading = false);
     },
   },
 };
