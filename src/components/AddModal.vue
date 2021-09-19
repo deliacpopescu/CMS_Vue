@@ -7,7 +7,7 @@
         <form id="form" @submit.prevent="submitForm">
           <!-- <div class="picture"> -->
           <!-- <div class="pic-upload"> -->
-          <img id="imagePlaceholder" v-bind:src="imgURL" />
+          <img id="imagePlaceholder" v-bind:src="imgSrc" />
           <!-- </div>
           <div> -->
           <label for="imageUpload" class="add-img-btn">Adaugati imagine</label>
@@ -21,44 +21,39 @@
           <!-- </div> -->
           <!-- </div> -->
           <div class="form-example">
-            <label for="lastName">Nume</label>
+            <label for="last-name">Nume</label>
             <input
               id="last-name"
-              name="last-name"
               type="text"
-              v-model="lastName"
-              class="mt-3 input-modal"
               placeholder="Nume"
+              v-model="employee.lastName"
+              class="mt-3 input-modal"
               oninvalid="this.setCustomValidity('Introduceti nume.')"
               oninput="setCustomValidity('')"
-              onchange="validateEmail()"
               required
             />
           </div>
           <div class="form-example">
-            <label for="Name">Prenume</label>
+            <label for="first-name">Prenume</label>
             <input
               id="name"
-              name="name"
               type="text"
-              v-model="name"
               placeholder="Prenume"
+              v-model="employee.firstName"
               class="mt-3 input-modal"
               oninvalid="this.setCustomValidity('Introduceti prenume.')"
               oninput="setCustomValidity('')"
-              onchange="validateEmail()"
               required
             />
           </div>
           <div class="form-example">
             <label for="email">Email</label>
             <input
-              v-model="email"
-              class="mt-3 input-modal"
-              type="text"
-              name="email"
               id="email"
+              type="text"
               placeholder="Email"
+              v-model="employee.email"
+              class="mt-3 input-modal"
               oninvalid="this.setCustomValidity('Introduceti un email.')"
               oninput="setCustomValidity('')"
               onchange="validateEmail()"
@@ -68,13 +63,11 @@
           <div class="form-example">
             <label for="gender">Gen</label>
             <select
-              class="mt-3"
               id="gender"
-              name="gender"
-              v-model="gender"
+              v-model="employee.gender"
+              class="mt-3"
               oninvalid="this.setCustomValidity('Selectati o optiune.')"
               oninput="setCustomValidity('')"
-              onchange="validateEmail()"
               required
             >
               <option value="" selected hidden>Selectati</option>
@@ -83,13 +76,12 @@
             </select>
           </div>
           <div class="form-example">
-            <label for="birthDate">Data nasterii</label>
+            <label for="birth-date">Data nasterii</label>
             <input
-              v-model="birthDate"
-              type="date"
-              class="form-control mt-3"
               id="birthDate"
-              name="birthDate"
+              type="date"
+              v-model="employee.birthDate"
+              class="form-control mt-3"
               oninvalid="this.setCustomValidity('Introduceti data nasterii.')"
               oninput="setCustomValidity('')"
               required
@@ -106,46 +98,24 @@
 
 <script>
 //import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+import axios from "axios";
+import variables from "./../variables";
+// import newUser from "./../assets/newUser.png";
 
-import newUser from "./../assets/newUser.png";
 export default {
-  props: {
-    LastName: {
-      type: String,
-      required: true,
-    },
-    Name: {
-      type: String,
-      required: true,
-    },
-    Email: {
-      type: String,
-      required: true,
-    },
-    Gender: {
-      type: String,
-      required: true,
-    },
-    BirtDate: {
-      type: Date,
-      required: true,
-    },
-  },
   data() {
     return {
-      employee: {
-        imgURL: newUser,
-        id: "",
-        lastName: "",
-        name: "",
-        email: "",
-        gender: "",
-        birtDate: "",
-      },
-      title: "Adaugati un nou angajat"
+        title: "Adaugati un nou angajat",
+        employee: {
+          imgSrc: "newUser.png",
+          firstName: "",
+          lastName: "",
+          email: "",
+          gender: "",
+          birthDate: "",
+        },
     };
   },
   methods: {
@@ -153,26 +123,29 @@ export default {
       document.getElementById("modal").style.display = "none";
     },
     submitForm() {
-      console.log("lastname " + this.lastName);
-      this.lastName = "";
-      console.log("name " + this.name);
-      this.name = "";
-      console.log("email " + this.email);
-      this.email = "";
-      console.log("gender" + this.gender);
-      this.gender = "M";
-      console.log("birthDate" + this.birtDate);
-      this.gender = "";
-      this.addNewData();
+      axios.post(`${variables.API_URL}/Employee`, {
+        imgSrc: this.employee.imgSrc,
+        firstName: this.employee.firstName,
+        lastName: this.employee.lastName,
+        email: this.employee.email,
+        gender: this.employee.gender,
+        birthDate: this.employee.birthDate,
+      })
+        .then(response => {
+          this.rows = response.data;
+      })
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+       })
+        .finally(() => {
+          this.$emit("new-employee-added");
+          this.closeModal()
+          });
     },
-    addNewData(){
-       this.$emit("add-new-row",this.lastName);
-    }
-    // addItem() {
-    //   console.log("se apeleaza add item");
-    // },
   },
 };
+
 </script>
 <style scoped>
 #modal {

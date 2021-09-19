@@ -4,7 +4,7 @@
       <span class="close" v-on:click="closeModal()">&times;</span>
       <h3>{{ title }}</h3>
       <div class="align-items-center">
-        <form id="form" >
+        <form id="form" @submit.prevent="submitForm">
           <!-- <div class="picture"> -->
           <!-- <div class="pic-upload"> -->
           <img id="imagePlaceholder" v-bind:src="imgURL" />
@@ -23,7 +23,7 @@
           <div class="form-example">
             <label for="lastName">Nume</label>
             <input
-              v-model="lastname"
+              v-model="lastName"
               class="mt-3 input-modal"
               type="text"
               name="lastName"
@@ -34,58 +34,8 @@
               required
             />
           </div>
-          <div class="form-example">
-            <label for="name">Prenume</label>
-            <input
-            v-model="name"
-              class="mt-3 input-modal"
-              type="text"
-              name="name"
-              id="name"
-              placeholder="Prenume"
-              oninvalid="this.setCustomValidity('Introduceti prenumele.')"
-              oninput="setCustomValidity('')"
-              required
-            />
-          </div>
-          <div class="form-example">
-            <label for="email">Email</label>
-            <input
-            v-model="email"
-              class="mt-3 input-modal"
-              type="text"
-              name="email"
-              id="email"
-              placeholder="Email"
-              oninvalid="this.setCustomValidity('Introduceti un email.')"
-              oninput="setCustomValidity('')"
-              onchange="validateEmail()"
-              required
-            />
-          </div>
-          <div class="form-example">
-            <label for="gender">Gen</label>
-            <select class="mt-3" id="gender" name="gender" v-model="gender" required>
-              <option value="" selected hidden>Selectati</option>
-              <option value="M">M</option>
-              <option value="F">F</option>
-            </select>
-          </div>
-          <div class="form-example">
-            <label for="birthDate">Data nasterii</label>
-            <input
-            v-model="birthDate"
-              type="date"
-              class="form-control mt-3"
-              id="birthDate"
-              name="birthDate"
-              oninvalid="this.setCustomValidity('Introduceti data nasterii.')"
-              oninput="setCustomValidity('')"
-              required
-            />
-          </div>
           <div class="text-center m-4">
-            <button class="add-img-btn" type="submit" v-on:click="addItem()">
+            <button class="add-img-btn" type="submit">
               Salveaza
             </button>
           </div>
@@ -101,26 +51,43 @@
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 
-import newUser from "./../assets/newUser.png";
+// import newUser from "./../assets/newUser.png";
 export default {
+  // props:{
+  //    lastName: {
+  //     type: String,
+  //     required: true,
+  //   },
+  //   firstName: {
+  //     type: String,
+  //     required: true,
+  //   },
+  //   email: {
+  //     type: String,
+  //     required: true,
+  //   },
+  //   gender: {
+  //     type: String,
+  //     required: true,
+  //   },
+  //   birtDate: {
+  //     type: Date,
+  //     required: true,
+  //   },
+  // },
   data() {
     return {
-
       title: "Editati datele angajatului",
       employee: {
-        imgURL: newUser,
-        id: "",
-        lastName: "",
-        name: "",
-        email: "",
-        gender: "",
-        birtDate: "",
-      },
+      type: Object,
+      default: () => ({ empty: true })
+    }
     };
   },
   methods: {
-    showModal() {
-      document.getElementById("modal").style.display = "block";
+    
+    submitForm() {
+
     },
     closeModal() {
       document.getElementById("modal").style.display = "none";
